@@ -42,7 +42,7 @@ export class Triangle {
     }
     this.delaunay = d3.Delaunay.from(this.points);
     ctx.strokeStyle = '#F00';
-    for (let i = 0; i < this.blockNum * 1.9; i++) {
+    for (let i = 0; i < this.blockNum * 3; i++) {
       this.triangles = this.delaunay.trianglePolygon(i);
       console.log(i, this.triangles[0][0]);
 
