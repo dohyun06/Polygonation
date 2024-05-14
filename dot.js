@@ -2,9 +2,12 @@ export class Dot {
   constructor(imgData, width, height) {
     this.imgData = imgData;
     this.points = [];
+    this.isPoints = Array.from(Array(height), () => new Array(width));
 
     this.width = width;
     this.height = height;
+
+    let index = 0;
 
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
@@ -24,8 +27,29 @@ export class Dot {
               );
           }
         }
-        if (color.size + (nullColor ? 1 : 0) >= 3) this.points.push([i, j]);
+        if (color.size + (nullColor ? 1 : 0) >= 3) {
+          this.points.push([i, j]);
+          this.isPoints[j][i] = true;
+        } else this.isPoints[j][i] = false;
       }
     }
+
+    for (let i = 0; i < this.points.length; i++) {
+      if (!this.nonMaximalSuppression(this.points[i])) {
+        this.points.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
+  nonMaximalSuppression(point) {
+    const [x, y] = point;
+    const s = [5, 4, 4, 3, 1];
+    for (let i = 0; i < 5 && y - i >= 0; i++) {
+      for (let j = 0; j < s[i] && x - j >= 0; j++) {
+        if (!(i == 0 && j == 0) && this.isPoints[y - i][x - j]) return false;
+      }
+    }
+    return true;
   }
 }
