@@ -38,21 +38,20 @@ export class Color {
 
   checkTriangle(x, y) {
     return (
-      this.calTriangle(this.triangle[0], this.triangle[1], this.triangle[2]) -
-        this.calTriangle([x, y], this.triangle[1], this.triangle[2]) -
-        this.calTriangle(this.triangle[0], [x, y], this.triangle[2]) -
-        this.calTriangle(this.triangle[0], this.triangle[1], [x, y]) <
+      this.calcTriangle(this.triangle[0], this.triangle[1], this.triangle[2]) -
+        this.calcTriangle([x, y], this.triangle[1], this.triangle[2]) -
+        this.calcTriangle(this.triangle[0], [x, y], this.triangle[2]) -
+        this.calcTriangle(this.triangle[0], this.triangle[1], [x, y]) <
       0.1
     );
   }
 
-  calTriangle(triangle1, triangle2, triangle3) {
-    const base = Math.sqrt((triangle2[0] - triangle1[0]) ** 2 + (triangle2[1] - triangle1[1]) ** 2);
-    const height =
+  calcTriangle(triangle1, triangle2, triangle3) {
+    return (
       Math.abs(
         (triangle3[0] - triangle1[0]) * (triangle2[1] - triangle1[1]) -
           (triangle2[0] - triangle1[0]) * (triangle3[1] - triangle1[1])
-      ) / base;
-    return (base * height) / 2;
+      ) / 2
+    );
   }
 }

@@ -26,12 +26,8 @@ class App {
       this.glCanvas.width = this.width;
       this.glCanvas.height = this.height;
 
-      this.tmpCanvas = document.createElement('canvas');
-      this.tmpCanvas.width = this.width;
-      this.tmpCanvas.height = this.height;
-      this.tmpCtx = this.tmpCanvas.getContext('2d');
-      this.tmpCtx.drawImage(this.img, 0, 0, this.width, this.height);
-      this.data = this.tmpCtx.getImageData(0, 0, this.width, this.height).data;
+      this.ctx.drawImage(this.img, 0, 0, this.width, this.height);
+      this.data = this.ctx.getImageData(0, 0, this.width, this.height).data;
 
       let tr = 0;
       let tg = 0;
@@ -85,19 +81,19 @@ class App {
     varying vec2 v_texCoord;
     void main() {
         vec4 color = texture2D(u_image, v_texCoord);
-        color.r = (color.r < ${this.stdColor[0]} ? 0.0 : 1.0);
-        color.g = (color.g < ${this.stdColor[1]} ? 0.0 : 1.0);
-        color.b = (color.b < ${this.stdColor[2]} ? 0.0 : 1.0);
+        color.r = (color.r < ${this.stdColor[0]} ? 0.4 : 0.6);
+        color.g = (color.g < ${this.stdColor[1]} ? 0.4 : 0.6);
+        color.b = (color.b < ${this.stdColor[2]} ? 0.4 : 0.6);
         gl_FragColor = color;
     }`;
     /*
-    color.r = (color.r < ${this.stdColor[0]} ? 0.0 : 1.0);
-    color.g = (color.g < ${this.stdColor[1]} ? 0.0 : 1.0);
-    color.b = (color.b < ${this.stdColor[2]} ? 0.0 : 1.0);
+        color.r = (color.r < ${this.stdColor[0]} ? 0.0 : 1.0);
+        color.g = (color.g < ${this.stdColor[1]} ? 0.0 : 1.0);
+        color.b = (color.b < ${this.stdColor[2]} ? 0.0 : 1.0);
 
-    color.r = (color.r < ${this.stdColor[0]} ? 0.0 : (color.r < ${this.stdColor[3]} ? 0.5 : 1.0));
-    color.g = (color.g < ${this.stdColor[1]} ? 0.0 : (color.g < ${this.stdColor[4]} ? 0.5 : 1.0));
-    color.b = (color.b < ${this.stdColor[2]} ? 0.0 : (color.b < ${this.stdColor[5]} ? 0.5 : 1.0));
+        color.r = (color.r < ${this.stdColor[0]} ? 0.0 : (color.r < ${this.stdColor[3]} ? 0.5 : 1.0));
+        color.g = (color.g < ${this.stdColor[1]} ? 0.0 : (color.g < ${this.stdColor[4]} ? 0.5 : 1.0));
+        color.b = (color.b < ${this.stdColor[2]} ? 0.0 : (color.b < ${this.stdColor[5]} ? 0.5 : 1.0));
     */
 
     const vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER);
@@ -140,6 +136,8 @@ class App {
     this.dot = new Dot(imageDataArray, this.width, this.height);
     this.points = this.dot.points;
 
+    // this.triangles = new Triangle(this.points).triangles;
+    /*
     this.delaunay = d3.Delaunay.from(this.points);
     for (let i = 0; ; i++) {
       if (this.delaunay.trianglePolygon(i)[0][0] === undefined) break;
@@ -150,36 +148,39 @@ class App {
     for (let i = 0; i < this.triangles.length; i++) {
       this.color[i] = new Color(this.width, this.height, this.triangles[i], this.data);
     }
+*/
+    this.ctx.clearRect(0, 0, this.width, this.height);
 
-    this.animate(); // init
-    this.animate(); // correction
+    // console.log(this.points.length);
+    this.draw(); // init
+    this.draw(); // correction
   }
 
-  animate() {
-    /*
+  draw() {
     for (let i = 0; i < this.points.length; i++) {
       this.ctx.beginPath();
       this.ctx.arc(this.points[i][0], this.points[i][1], 1, 0, Math.PI * 2);
       this.ctx.fillStyle = '#F00';
       this.ctx.fill();
     }
-    */
+
     /*
     this.ctx.strokeStyle = '#FFF';
     this.ctx.lineWidth = 1;
     */
-
+    /*
     for (let i = 0; i < this.triangles.length; i++) {
       this.ctx.beginPath();
       this.ctx.moveTo(this.triangles[i][0][0], this.triangles[i][0][1]);
       this.ctx.lineTo(this.triangles[i][1][0], this.triangles[i][1][1]);
       this.ctx.lineTo(this.triangles[i][2][0], this.triangles[i][2][1]);
-      /*
-      this.ctx.stroke();
-      */
+
+      // this.ctx.stroke();
+
       this.ctx.fillStyle = `rgb(${this.color[i].color[0]}, ${this.color[i].color[1]}, ${this.color[i].color[2]})`;
       this.ctx.fill();
     }
+      */
   }
 }
 

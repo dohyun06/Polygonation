@@ -1,2 +1,4 @@
 *.jpg
 !img.jpg
+*triangle.js
+*test.js
